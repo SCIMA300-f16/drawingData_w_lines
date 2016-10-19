@@ -1,3 +1,5 @@
+//this is margsbranch and I'm going to make some squares!!!
+
 Table table;
 
 void setup() { 
@@ -99,9 +101,8 @@ void drawTable(float x, float y, float w, float h, int day, int speedtoAlpha, in
 //stroke(255-daytoColor*5, daytoColor*5, daytoColor*5, speedtoAlpha);
 
 strokeWeight(speedtoWeight);
-line(x, y, x+w, y+ dirtoY); 
-line(x, y+h/3, x+w, y+h/3+ dirtoY); 
-line(x, y+(h/3*2), x+w, y+(h/3*2)+dirtoY); 
+rect(x, y, w, y+ dirtoY); 
+
 //println("dirtoCoord: ",dirtoY);
 
 //println("daytoColor: ", daytoColor);
