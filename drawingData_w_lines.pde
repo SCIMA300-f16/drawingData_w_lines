@@ -1,7 +1,9 @@
 Table table;
 
+//eingsbranch
+
 void setup() { 
-  size(1300, 700);
+  size(500, 1000);
   background(0);
   // the file must be in the sketch's data folder
   // the argument "header" tells loadTable() to organize the file
