@@ -1,7 +1,9 @@
+//this is MinsBranch!!
+
 Table table;
 
 void setup() { 
-  size(1300, 700);
+  size(1700, 700);
   background(0);
   // the file must be in the sketch's data folder
   // the argument "header" tells loadTable() to organize the file
