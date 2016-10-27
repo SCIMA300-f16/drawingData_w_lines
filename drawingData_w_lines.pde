@@ -1,111 +1,99 @@
 //this is emilys branch wooooooo
 
 Table table;
+float morning;
+float afternoon;
+float night;
+float x, y;
+float speedX=1;
+float speedY=1;
 
-void setup() { 
-  size(1300, 700);
-  background(0);
-  // the file must be in the sketch's data folder
-  // the argument "header" tells loadTable() to organize the file
-  // columns according to the header line (the first line)
-  table = loadTable("myfile.csv", "header"); 
+//setup document
+void setup() {
+  size(1000, 650);
+  smooth();
 
-  // How many rows did we read?
+  table = loadTable("myfile.csv", "header");
+
+  //test
   int tableRowCount = table.getRowCount();
   int tableColumnCount = table.getColumnCount();
 
-  // Print these numbers to check:
-  println("Total rows in table = " + tableRowCount); 
+  //prints the row count below
+  println("Total rows in table = " + tableRowCount);
 
-  //getting number of rows and columns to space out data properly
+  //prints the width and height of the table below
   int noOfRowsandColumns = int(sqrt(tableRowCount));
 
-  //dividing width by that number
   float w = (width)/noOfRowsandColumns;
   float h = (height)/noOfRowsandColumns;
 
   println("w: ", w);
   println("h: ", h);
+}
+void draw() {
+  background(255);
+  noStroke ();
 
-  //establishing x and y values
-  float x = 0;
-  float y = 0;
-
-
+  //calling out table values
   for (TableRow row : table.rows()) {
-
-    int day = row.getInt("DD"); // the day
-    int direction = row.getInt("WDIR"); // the wind direction
-    float speed = row.getFloat("WSPD"); // the wind speed
-
-    // the wind direction will indicate the rotation of the line
-    // no sense in going more than 45 degrees as we can't tell the 
-    // difference 
-    int dirtoY = int(map( direction, 0, 360, 0, -45));
-
-    // the wind speed will change the color (monochrome)
-    int speedtoAlpha = int(map(speed, 0, 15, 0, 255));
-
-    int speedtoWeight = int(map(speed, 0, 15, 0, 8));
-
-    // move to the next column
-    x += w;
+    //assign random x and y variables so dots show up in different locations
+    x = random(0, width);
+    y = random(0, height);
+    morning = row.getFloat("Morning");// Time spent in morning
+    afternoon = row.getFloat("Afternoon"); // Time spent in afternoon
+    night = row.getFloat("Night"); // Time spent at night
+    //float productive = row.getFloat("Productive"); // Time spent at night
 
 
+    //draw ellipse
 
-    if (x > width) {
-      x = 0;
-      y+=h;
-    }
-    float newx = map(x, 0, 1000, 30, 970);
-    float newy = map(y, 0, 1000, 30, 970);
-    drawTable(newx, newy, w, h, day, speedtoAlpha, dirtoY, speedtoWeight);
+    fill (#FF0000);
+    ellipse (x, map(y, 0, height, 0, height/3), morning*7, morning*7);
+    fill(#00FFFF);
+    ellipse (x, map(y, 0, height, height/3, height/3*2), afternoon*7, afternoon*7);
+    fill(#FFFF00);
+    ellipse (x, y, night*7, night*7);
+    move();
+    bounce();
+    noLoop();
   }
 
+
+  //title
   fill(255, 120);
   rect(0, 0, 250, 20);
   fill(0);
-  text("wind speed and wind direction over time", 5, 15);
+  text("time spent on the computer", 800, 630);
 }
 
-void drawTable(float x, float y, float w, float h, int day, int speedtoAlpha, int dirtoY, int speedtoWeight) {
-  //switch case here for day colors?
+//moving ball
+void move() {
+  x+=speedX;
+  y+= speedY;
+}
 
-  switch (day) {
-  case 31:
-    stroke(255, 0, 0, speedtoAlpha);
-    break;
-  case 1:
-    stroke(0, 255, 0, speedtoAlpha);
-    break;
-  case 2:
-    stroke(0, 0, 255, speedtoAlpha);
-    break;
-  case 3:
-    stroke(255, 0, 0, speedtoAlpha);
-    break;
-  case 4:
-    stroke(0, 255, 0, speedtoAlpha);
-    break;
-  case 5:
-    stroke(0, 0, 255, speedtoAlpha);
-    break;
-  case 6:
-    stroke(255, 0, 0, speedtoAlpha);
-    break;
-  case 7:
-    stroke(0, 255, 0, speedtoAlpha);
-    break;
+
+//make ball bounce around page
+//speed is equal to productivity level
+
+void bounce() {
+  //if the ball reaches the width of the page change the x value to be negative
+  if (x>width) {
+    speedX=speedX * -1;
+  }
+  //if the ball reaches the other side of the page change x value to be positive
+  if (x<0) {
+    speedX = speedX * -1;
+  }
+  //if y reaches the bottom of the page make y negative
+  if (y>height) {
+    speedY=speedY *-1;
+  }
+  //if y reached top of page may y positive
+  if (y<0) {
+    speedY=speedY*-1;
   }
 
-//stroke(255-daytoColor*5, daytoColor*5, daytoColor*5, speedtoAlpha);
-
-strokeWeight(speedtoWeight);
-line(x, y, x+w, y+ dirtoY); 
-line(x, y+h/3, x+w, y+h/3+ dirtoY); 
-line(x, y+(h/3*2), x+w, y+(h/3*2)+dirtoY); 
-//println("dirtoCoord: ",dirtoY);
-
-//println("daytoColor: ", daytoColor);
-
+  //how fast the ball moves
 }
