@@ -1,111 +1,65 @@
-Table table;
+//EINGSBRANCH!!!!
+//yay
 
-//eingsbranch
+Table food;
+int row;
+int rowCount = 0;
+int a = 0;
+int b = 10;
 
-void setup() { 
-  size(500, 1000);
-  background(0);
-  // the file must be in the sketch's data folder
-  // the argument "header" tells loadTable() to organize the file
-  // columns according to the header line (the first line)
-  table = loadTable("myfile.csv", "header"); 
-
-  // How many rows did we read?
-  int tableRowCount = table.getRowCount();
-  int tableColumnCount = table.getColumnCount();
-
-  // Print these numbers to check:
-  println("Total rows in table = " + tableRowCount); 
-
-  //getting number of rows and columns to space out data properly
-  int noOfRowsandColumns = int(sqrt(tableRowCount));
-
-  //dividing width by that number
-  float w = (width)/noOfRowsandColumns;
-  float h = (height)/noOfRowsandColumns;
-
-  println("w: ", w);
-  println("h: ", h);
-
-  //establishing x and y values
-  float x = 0;
-  float y = 0;
-
-
-  for (TableRow row : table.rows()) {
-
-    int day = row.getInt("DD"); // the day
-    int direction = row.getInt("WDIR"); // the wind direction
-    float speed = row.getFloat("WSPD"); // the wind speed
-
-    // the wind direction will indicate the rotation of the line
-    // no sense in going more than 45 degrees as we can't tell the 
-    // difference 
-    int dirtoY = int(map( direction, 0, 360, 0, -45));
-
-    // the wind speed will change the color (monochrome)
-    int speedtoAlpha = int(map(speed, 0, 15, 0, 255));
-
-    int speedtoWeight = int(map(speed, 0, 15, 0, 8));
-
-    // move to the next column
-    x += w;
-
-
-
-    if (x > width) {
-      x = 0;
-      y+=h;
-    }
-    float newx = map(x, 0, 1000, 30, 970);
-    float newy = map(y, 0, 1000, 30, 970);
-    drawTable(newx, newy, w, h, day, speedtoAlpha, dirtoY, speedtoWeight);
-  }
-
-  fill(255, 120);
-  rect(0, 0, 250, 20);
-  fill(0);
-  text("wind speed and wind direction over time", 5, 15);
+void setup() {
+  size(900, 800);
+  background(10);
+  food = loadTable("two.csv");
+  row = food.getRowCount();
+  println(rowCount);
 }
 
-void drawTable(float x, float y, float w, float h, int day, int speedtoAlpha, int dirtoY, int speedtoWeight) {
-  //switch case here for day colors?
+void draw() {
+  fill(255);
+  noStroke();
+  if (rowCount<row) {
+    String day = trim(food.getString(rowCount, 0));
+    int rate = food.getInt(rowCount, 5);
+    float remappedRate = map(float(rate), 0, 5, 100, 700);
+    text(day, remappedRate+45, b+6);
+    rect(a+40, b, remappedRate, 6);
 
-  switch (day) {
-  case 31:
-    stroke(255, 0, 0, speedtoAlpha);
-    break;
-  case 1:
-    stroke(0, 255, 0, speedtoAlpha);
-    break;
-  case 2:
-    stroke(0, 0, 255, speedtoAlpha);
-    break;
-  case 3:
-    stroke(255, 0, 0, speedtoAlpha);
-    break;
-  case 4:
-    stroke(0, 255, 0, speedtoAlpha);
-    break;
-  case 5:
-    stroke(0, 0, 255, speedtoAlpha);
-    break;
-  case 6:
-    stroke(255, 0, 0, speedtoAlpha);
-    break;
-  case 7:
-    stroke(0, 255, 0, speedtoAlpha);
-    break;
+    if (rowCount<row) {
+      String what = trim(food.getString(rowCount, 6));
+      int when = food.getInt(rowCount, 7);
+      //float remappedWhen = map(float(when), 0, 5, 100, 700);
+//display text
+      textSize(10);
+      text(what, 45, b+14);
+//colorcode breakfast/lunch/dinner
+      if (food.getInt(rowCount, 7) == 1) {
+      fill(179,205,224);} 
+      else if (food.getInt(rowCount, 7) == 2) {
+      fill(100,151,177);}
+      else if (food.getInt(rowCount, 7) == 3) {
+      fill(12,69,125);}
+
+   
+  
+//bar เอาไว้ใส่สีสวัน 'remappedrate ความยาวให้ต
+      rect(a+40, b, remappedRate, 6);
+    }
+    
+    
+
+//void function {
+//  statements
+//}
+
+    //  if (food.getString(rowCount, 5).equals("b")) {
+    //    fill(0,244,110);
+    //    noStroke();
+    //    point(b,120);
+    //    println("food");
+    //  }
   }
 
-//stroke(255-daytoColor*5, daytoColor*5, daytoColor*5, speedtoAlpha);
-
-strokeWeight(speedtoWeight);
-line(x, y, x+w, y+ dirtoY); 
-line(x, y+h/3, x+w, y+h/3+ dirtoY); 
-line(x, y+(h/3*2), x+w, y+(h/3*2)+dirtoY); 
-//println("dirtoCoord: ",dirtoY);
-
-//println("daytoColor: ", daytoColor);
-
+  b+=16;
+  rowCount++;
 }
