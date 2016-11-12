@@ -1,3 +1,4 @@
+//Erin Zhang
 int xPos=60;
 Table table;
 Travel[] mypath;
@@ -20,8 +21,7 @@ void setup() {
     float negFrequency = map(frequency, 0, 1200, 0, 10);
 
     //make objects
-    mypath[i] = new Travel(1, day, 10-negFrequency, negFrequency*5, signal, 
-      xPos, 50, duration*2);
+    mypath[i] = new Travel(day, 10-negFrequency, negFrequency*5, signal, xPos, 50, duration*2);
     i++;
     xPos+=34;
     println(frequency);
@@ -36,11 +36,11 @@ void draw() {
     mypath[j].display();
   }
 
-  //captions
+  //title
   textSize(24);
-  text("TRAVEL TIME AND RED SIGNALS IN SPETEMBER", 460, 600, 300, 300);
-  textSize(9);
-  text("Erin Zhang", 460, 700);
-
-  noLoop();
+  text("TRAVEL TIME AND RED SIGNALS IN SPETEMBER", 460, 450, 300, 180);
+  //caption
+  textSize(10);
+  text("Erin Zhang", 460, 540);
+  text("This graphic shows the relationship between travel duration and numbers of red signals I run into in September 2016. The red lines indicate the duration of the trip in a day; points of the zigzag lines refer to the numbers of the signals; length of the zigzag lines represent frequency. The smoother a line appears the better travel experience I had on that day.", 460, 560, 280, 300);
 }
